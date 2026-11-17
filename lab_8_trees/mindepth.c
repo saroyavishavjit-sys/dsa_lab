@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+    int val;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(int val) {
+    struct TreeNode* node =
+        (struct TreeNode*)malloc(sizeof(struct TreeNode));
+
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+
+    return node;
+}
+
+int minDepth(struct TreeNode* root) {
+    if (root == NULL)
+        return 0;
+
+    if (root->left == NULL)
+        return 1 + minDepth(root->right);
+
+    if (root->right == NULL)
+        return 1 + minDepth(root->left);
+
+    int left = minDepth(root->left);
+    int right = minDepth(root->right);
+
+    return 1 + (left < right ? left : right);
+}
+
+int main() {
+    struct TreeNode* root = createNode(1);
+
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+    printf("Minimum depth: %d\n", minDepth(root));
+
+    return 0;
+}
